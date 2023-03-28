@@ -53,7 +53,7 @@ class HashCerrado {
             int pos = this->fHash(str) % this->maxElementos;
             int contador = 0;
             while(this->hash[pos]){
-                pos=(pos + pow(++contador, 2)) % this->maxElementos; //potencia(++contador, 2)
+                pos=(pos + static_cast<int>(pow(++contador, 2))) % this->maxElementos; //potencia(++contador, 2)
                 // Se suma al original o se lleva la suma
             }
             this->hash[pos] = &dato;
