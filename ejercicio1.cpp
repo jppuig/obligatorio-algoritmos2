@@ -3,12 +3,9 @@
 #include <fstream>  // IMPORTANTE! BORRAR
 
 #include "./clases/hash.cpp"
-#include "./funciones/potencia.cpp"
-#include <cmath> //BORRAR
+#include <cmath>
 
 using namespace std;
-
-//int potencia(int num, int pot);
 
 int miHash(char* str) {
     int largo = strlen(str);

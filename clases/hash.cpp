@@ -1,11 +1,8 @@
 #include <iostream>
 #include <cstring>
-//#include "./funciones/potencia.cpp"
-#include <cmath> //BORRAR
+#include <cmath>
 
 using namespace std;
-
-//int potencia(int num, int pot);
 
 template<class T>
 class HashCerrado {
@@ -48,6 +45,8 @@ class HashCerrado {
             
             this->fHash=fHash;
         }
+
+        // Hacer deestructor
 
         void agregar(char* str,T dato){
             int pos = this->fHash(str) % this->maxElementos;
