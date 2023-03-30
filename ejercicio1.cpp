@@ -7,20 +7,20 @@
 
 using namespace std;
 
-int miHash(char* str) {
-    int largo = strlen(str);
-    int suma = 0;
+int miHash(string str) {
+    int largo = str.length();
+    unsigned long long suma = 0;
 
     for (int i=0; i<largo; i++) {
-        suma += int(str[i]) * static_cast<int>(pow(37, i)); //(potencia(37, i)); //Preguntar com hacerlo
+        suma += int(str[i]) * static_cast<int>(pow(37, i));
     }
 
     return suma;
 }
 
-void mostrar(HashCerrado<int>* hash, char** str, int cant) {
+void mostrar(HashCerrado* hash, string* str, int cant) {
     for (int i=0; i<cant; i++) {
-        cout << str[i] << " " << hash->elemento(str[i]);
+        cout << str[i] << " " << hash->elemento(str[i]) << endl;
     }
 }
 
@@ -35,15 +35,14 @@ int main() {
     int cant;
     cin >> cant;
 
-    HashCerrado<int>* hash = new HashCerrado<int>(cant, miHash);
-    char** nombres = new char*[cant];
+    HashCerrado* hash = new HashCerrado(cant, miHash);
+    string* nombres = new string[cant];
 
     for (int i=0; i<cant; i++) {
         int cantMaterias;
         int suma = 0;
         
-        //cin.getline(nombres[i], 100);  // A preguntar
-        //cin >> nombres[i];
+        cin >> nombres[i];
         cin >> cantMaterias;
 
         for (int j = 0; j<cantMaterias; j++) {
@@ -52,11 +51,13 @@ int main() {
             suma += num;
         }
 
-        int promedio = suma / cantMaterias;
+        double promedio = round(suma / cantMaterias);
         hash->agregar(nombres[i], promedio);
     }
 
     mostrar(hash, nombres, cant);
+
+    hash->~HashCerrado();
     
     return 0;
 }
