@@ -32,26 +32,23 @@ class Heap {
         }
 
         void hundir(int pos){
-            int posMin;
+            int hijoMax = pos*2+1;
 
-            if (pos*2+1 < this->tope || pos*2+2 < this->tope) {
-                if (this->heap[pos*2+1]->prom > this->heap[pos*2+2]->prom) {
-                    posMin = pos*2+1;
-                }
-                else {
-                    posMin = pos*2+2;
+            if (pos*2+2 < this->tope) {
+                if (this->heap[pos*2+1]->prom < this->heap[pos*2+2]->prom) {
+                    hijoMax = pos*2+2;
                 }
             }
-            else {
+            else if (hijoMax >= this->tope) {
                 return;
             }
 
-            if (this->heap[pos]->prom <= this->heap[posMin]->prom) { // fijarse si = va arriba
-                nodoHeap* temp = this->heap[posMin];
-                this->heap[posMin] = this->heap[pos];
+            if (this->heap[pos]->prom <= this->heap[hijoMax]->prom) { // fijarse si = va arriba
+                nodoHeap* temp = this->heap[hijoMax];
+                this->heap[hijoMax] = this->heap[pos];
                 this->heap[pos] = temp;
 
-                hundir(posMin);
+                hundir(hijoMax);
             }
         }
 
