@@ -1,6 +1,6 @@
 #include <iostream>
-#include <cstring>
 #include "clases/grafo.cpp"
+
 #include <fstream>  // IMPORTANTE! BORRAR
 
 using namespace std;
@@ -19,7 +19,7 @@ int main() {
     cin >> ciudades;
     cin >> carreteras;
 
-    Grafo<int>* grafo = new Grafo<int>(ciudades);
+    Grafo* grafo = new Grafo(ciudades);
 
     for (int i=0; i<carreteras; i++) {
         int origen, destino, distancia, doble, habilitada;
@@ -29,16 +29,15 @@ int main() {
         cin >> doble;
         cin >> habilitada;
 
-        bool hab = habilitada == 1;
-        bool dobleCar = doble == 2;
+        if (habilitada == 1) {
+            grafo->agregarArista(origen, destino, distancia);
 
-        if (habilitada) {
-            grafo->agregarArista(origen-1, destino-1, distancia);
-
-            if (dobleCar) {
-                grafo->agregarArista(destino-1, origen-1, distancia);
+            if (doble == 2) {
+                grafo->agregarArista(destino, origen, distancia);
             }
         }
+
+
     }
 
 }

@@ -17,38 +17,6 @@ class Lista {
         NodoLista<T> * ppio, * fin;
         int largo;
 
-        bool perteneceRec(T dato, NodoLista<T>* nodo){
-            return nodo && (dato == nodo->dato || perteneceRec(dato, nodo->sig));
-        }
-
-        void borrarRec(T dato, NodoLista<T> *& nodo){
-            if(nodo){
-                if(dato == nodo->dato){
-                    NodoLista<T> * aBorrar = nodo;
-                    nodo = nodo->sig;
-                    if(nodo){
-                        nodo->ant = aBorrar->ant;
-                    } else {
-                        this->fin = this->fin->ant;
-                        if(!this->fin){
-                            this->ppio=NULL;
-                        }
-                    }
-                    delete aBorrar;
-                    this->largo--;
-                } else {
-                    borrarRec(dato, nodo->sig);
-                }
-            }
-        }
-
-        void mostrarRec(NodoLista<T> *nodo){
-            if(nodo){
-                cout << nodo->dato << endl;
-                mostrarRec(nodo->sig);
-            }
-        }
-
         void vaciarRec(NodoLista<T>* &nodo){
             if(nodo){
                 vaciarRec(nodo->sig);
@@ -58,27 +26,13 @@ class Lista {
         }
 
     public:
+        Lista() {
+            this->ppio = this->fin = NULL;
+            this->largo = 0;
+        }
 
         ~Lista(){
             vaciarRec(ppio);
-        }
-
-        void vaciar(){
-            vaciarRec(ppio);
-            largo=0;
-            fin=NULL;
-        }
-
-        int cantidadElementos(){
-            return this->largo;
-        }
-
-        bool esVacia() {
-            return this->largo==0;
-        }
-
-        bool pertenece(T dato) {
-            return perteneceRec(dato, this->ppio);
         }
 
         void insertarPpio(T dato){
@@ -93,55 +47,7 @@ class Lista {
             this->largo++;
         }
 
-        void insertarFin(T dato){
-            this->fin = new NodoLista<T>(dato, this->fin, NULL);
-            if(!this->ppio){
-                this->ppio = this->fin;
-            }
-            else
-            {
-                this->fin->ant->sig = this->fin;
-            }
-            this->largo++;
-        }
-
-        // Inserta de forma ordenada
-        void insertarOrd(T dato, int(*fComp)(T a, T b)){
-            if(!ppio || fComp(ppio->dato, dato)  >= 0){
-                insertarPpio(dato);
-                return;
-            }
-            if(fComp(dato, fin->dato) >= 0){
-                insertarFin(dato);
-                return;
-            }
-            NodoLista<T>* aux = ppio, *nuevo;
-            while(fComp(aux->sig->dato, dato) < 0){
-                aux = aux->sig;
-            }
-            nuevo = new NodoLista<T>(dato, aux, aux->sig);
-            aux->sig->ant = nuevo;
-            aux->sig = nuevo;
-            largo++;
-        }
-
-        void borrar(T dato){
-            borrarRec(dato, this->ppio);
-        }
-
-        void mostrar(){
-            mostrarRec(this->ppio);
-        }
-
         T obtenerPpio(){
             return this->ppio->dato;
-        }
-
-        T obtenerFin(){
-            return this->fin->dato;
-        }
-
-        IteradorLista<T>* obtenerIterador(){
-            return new IteradorLista<T>(ppio);
         }
 };
