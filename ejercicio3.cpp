@@ -1,16 +1,17 @@
 #include <iostream>
 #include <cstring>
 #include "clases/heap.cpp"
+#include <cmath>
 #include <fstream>  // IMPORTANTE! BORRAR
 
 using namespace std;
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("prueba3.in.txt");
+    ifstream myFile("pruebas/Ejercicio3/100.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
-    ofstream myFile2("prueba3.out.txt");
+    ofstream myFile2("out.txt");
     cout.rdbuf(myFile2.rdbuf());
 
     int cant;
@@ -38,7 +39,7 @@ int main() {
         }
 
         
-        prom = suma / cantPas;
+        prom = round((suma / cantPas) * 100) / 100;
         heap->encolar(prom, pasajeros, cantPas);
     }
 

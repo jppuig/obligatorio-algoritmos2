@@ -18,8 +18,7 @@ class Heap {
         int maxElementos;
 
         void flotar(int pos){
-            if (pos == 0 || pos % 2 == 0 && this->heap[pos]->prom <= this->heap[(pos-1)/2]->prom 
-            || pos % 2 != 0 && this->heap[pos]->prom <= this->heap[(pos-2)/2]->prom) {
+            if (pos == 0 || this->heap[pos]->prom <= this->heap[(pos-1)/2]->prom) {
                 return;
             }
             else {
