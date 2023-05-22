@@ -19,6 +19,8 @@ int main() {
 
     Heap* heap = new Heap(cant);
 
+    // ARREGLAR LO DE LOS CEROS A LA IZQUIERDA
+
     for (int i=0;i<cant;i++) {
         int cantPas;
         double prom;
