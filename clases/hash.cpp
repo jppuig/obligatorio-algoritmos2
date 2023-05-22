@@ -59,7 +59,7 @@ class HashCerrado {
         }
 
         void agregar(string str,int num){
-            int primera = this->fHash(str) % this->maxElementos;
+            long long primera = abs(this->fHash(str)) % this->maxElementos;
             int pos = primera;
             int contador = 0;
             while(this->hash[pos]){
@@ -69,7 +69,7 @@ class HashCerrado {
         }
 
         int elemento(string str) {
-            int primera = this->fHash(str) % this->maxElementos;
+            long long primera = abs(this->fHash(str)) % this->maxElementos;
             int pos = primera;
             int contador = 0;
             while(this->hash[pos]->nombre != str){ // != string
