@@ -20,8 +20,6 @@ int main() {
 
     Heap* heap = new Heap(cant);
 
-    // ARREGLAR LO DE LOS CEROS A LA IZQUIERDA
-
     for (int i=0;i<cant;i++) {
         int cantPas;
         double prom;
@@ -40,7 +38,6 @@ int main() {
             pasajeros[j] = pas;
             suma += vuelos;
         }
-
         
         prom = round((suma / cantPas) * 100) / 100;
         heap->encolar(prom, pasajeros, cantPas);

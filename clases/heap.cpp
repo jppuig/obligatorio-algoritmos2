@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstring>
+#include <iomanip>
+#include <cmath>
 using namespace std;
 
 class nodoHeap {
@@ -95,7 +97,13 @@ class Heap {
 
         void mostrar() {
             while(!this->esVacia()) {
-                cout << this->promMax() << " ";
+                double max = this->promMax();
+                if (std::fmod(max, 1.0) != 0.0) {
+                    cout << std::fixed << std::setprecision(2) << max << " ";
+                } else {
+                    cout << std::fixed << std::setprecision(0) << max << " ";
+                }    
+                // cout << this->promMax() << " ";
                 for (int i=0;i<this->cantPasMax()-1;i++) {
                     cout << this->pasajerosMax()[i] << " ";
                 }
