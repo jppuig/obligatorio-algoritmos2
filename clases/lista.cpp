@@ -11,6 +11,33 @@ class NodoLista {
         NodoLista(T dato, NodoLista<T> *ant, NodoLista<T> *sig): dato(dato), sig(sig), ant(ant){}
 };
 
+template <class T>
+class IteradorLista {
+    private:
+        NodoLista<T> *actual, *ppio;
+
+    public:
+        IteradorLista(NodoLista<T>* ppio){
+            this->actual = this->ppio = ppio;
+        }
+
+        bool hayElemento() {
+            return actual != NULL;
+        }
+
+        T obtenerElemento() {
+            return actual->dato;
+        }
+
+        void avanzar(){
+            actual = actual->sig;
+        }
+
+        void reiniciar(){
+            actual = ppio;
+        }
+};
+
 template<class T>
 class Lista {
     private:
@@ -49,5 +76,9 @@ class Lista {
 
         T obtenerPpio(){
             return this->ppio->dato;
+        }
+
+        IteradorLista<T>* obtenerIterador(){
+            return new IteradorLista<T>(ppio);
         }
 };

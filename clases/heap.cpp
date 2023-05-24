@@ -44,7 +44,7 @@ class Heap {
                 return;
             }
 
-            if (this->heap[pos]->prom <= this->heap[hijoMax]->prom) { // fijarse si = va arriba
+            if (this->heap[pos]->prom < this->heap[hijoMax]->prom) { // fijarse si = va arriba
                 nodoHeap* temp = this->heap[hijoMax];
                 this->heap[hijoMax] = this->heap[pos];
                 this->heap[pos] = temp;
@@ -104,10 +104,10 @@ class Heap {
                     cout << std::fixed << std::setprecision(0) << max << " ";
                 }    
                 // cout << this->promMax() << " ";
-                for (int i=0;i<this->cantPasMax()-1;i++) {
+                for (int i=0;i<this->cantPasMax();i++) {
                     cout << this->pasajerosMax()[i] << " ";
                 }
-                cout << this->pasajerosMax()[this->cantPasMax()-1] << endl;
+                cout << endl;
                 this->desencolar();
             }
         }

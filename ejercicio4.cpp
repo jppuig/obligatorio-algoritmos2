@@ -36,8 +36,28 @@ int main() {
                 grafo->agregarArista(destino, origen, distancia);
             }
         }
-
-
     }
 
+    int ciudadesDeshabilitadas;
+    cin >> ciudadesDeshabilitadas;
+    for (int i=0; i<ciudadesDeshabilitadas; i++) {
+        int ciudad;
+        cin >> ciudad;
+
+        grafo->deshabilitarCiudad(ciudad);
+    }
+
+    int cantCarreterasDeshabilitadas;
+    cin >> cantCarreterasDeshabilitadas;
+    for (int i=0; i<cantCarreterasDeshabilitadas; i++) {
+        int carreteraOrigen;
+        int carreteraDestino;
+
+        cin >> carreteraOrigen;
+        cin >> carreteraDestino;
+
+        grafo->deshabilitarArista(carreteraOrigen, carreteraDestino);
+    }
+
+    
 }

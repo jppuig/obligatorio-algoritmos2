@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("pruebas/Ejercicio3/100.in.txt");
+    ifstream myFile("pruebas/Ejercicio3/1000000.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
     ofstream myFile2("out.txt");
@@ -39,7 +39,7 @@ int main() {
             suma += vuelos;
         }
         
-        prom = round((suma / cantPas) * 100) / 100;
+        prom = suma / cantPas;
         heap->encolar(prom, pasajeros, cantPas);
     }
 
