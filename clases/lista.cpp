@@ -21,6 +21,15 @@ class IteradorLista {
             this->actual = this->ppio = ppio;
         }
 
+        void eliminarLista() {
+            this->actual = this->ppio = ppio;
+            while (this->hayElemento()) {
+                this->avanzar();
+                delete this->ppio;
+                this->ppio = this->actual;
+            }
+        }
+
         bool hayElemento() {
             return actual != NULL;
         }

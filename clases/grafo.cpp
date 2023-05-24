@@ -26,6 +26,15 @@ class Grafo {
             for (int i = 0; i < tope; this->listaAdy[i++] = new Lista<Arista*>());
         }
 
+        ~Grafo() {
+            for (int i=0; i<this->tope; i++) {
+                IteradorLista<Arista*>* it = this->listaAdy[i]->obtenerIterador();
+                it->eliminarLista();
+
+                delete[] this->listaAdy;
+            }
+        }
+
         void agregarArista(int origen, int destino, int costo) {
             Arista* arista = new Arista(origen, destino, costo);
             this->listaAdy[origen-1]->insertarPpio(arista);

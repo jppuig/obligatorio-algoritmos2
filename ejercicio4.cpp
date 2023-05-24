@@ -15,6 +15,10 @@ int main() {
 
     int ciudades;
     int carreteras;
+    int cantCiudadesDeshabilitadas;
+    int cantCarreterasDeshabilitadas;
+    int ciudadDesde;
+    int ciudadHasta;
 
     cin >> ciudades;
     cin >> carreteras;
@@ -29,7 +33,7 @@ int main() {
         cin >> doble;
         cin >> habilitada;
 
-        if (habilitada == 1) {
+        if (habilitada == 1) {      // Chequeo si esta habilitada y sino agrego arista
             grafo->agregarArista(origen, destino, distancia);
 
             if (doble == 2) {
@@ -38,16 +42,14 @@ int main() {
         }
     }
 
-    int ciudadesDeshabilitadas;
-    cin >> ciudadesDeshabilitadas;
-    for (int i=0; i<ciudadesDeshabilitadas; i++) {
+    cin >> cantCiudadesDeshabilitadas;
+    for (int i=0; i<cantCiudadesDeshabilitadas; i++) {
         int ciudad;
         cin >> ciudad;
 
-        grafo->deshabilitarCiudad(ciudad);
+        grafo->deshabilitarCiudad(ciudad);     // Deshabilita la ciudad
     }
 
-    int cantCarreterasDeshabilitadas;
     cin >> cantCarreterasDeshabilitadas;
     for (int i=0; i<cantCarreterasDeshabilitadas; i++) {
         int carreteraOrigen;
@@ -56,8 +58,16 @@ int main() {
         cin >> carreteraOrigen;
         cin >> carreteraDestino;
 
-        grafo->deshabilitarArista(carreteraOrigen, carreteraDestino);
+        grafo->deshabilitarArista(carreteraOrigen, carreteraDestino);   // Deshabilita la arista
     }
 
-    
+    cin >> ciudadDesde;     // Ciudad origen a buscar
+    cin >> ciudadHasta;     // Ciudad destino a buscar
+
+
+
+
+    grafo->~Grafo();
+
+    return 0;
 }
