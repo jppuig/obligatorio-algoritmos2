@@ -28,7 +28,7 @@ int main() {
 
     avl->mostrar();
 
-    avl->~AVL();
+    delete avl;
     
     return 0;
 }

@@ -21,49 +21,14 @@ class AVL {
         bool vario;
         int cantElem;
 
-        int menor(int a, int b) {
-            int min = b;
-
-            if (a < b)
-                min = a;
-
-            return min;
-        }
-
-        int cualMayor(string str1, string str2) {
-            int largoMenor = menor(str1.length(), str2.length());
-            int res = 0;
-            
-            for (int i = 0; i < largoMenor + 1 && res == 0; i++) {
-                if (i == largoMenor) {
-                    if (str1[i] == '\0' && str2[i] != '\0')
-                        res = 1;
-                    else if (str1[i] != '\0' && str2[i] == '\0')
-                        res = -1;
-                }
-                else {
-                    if (str1[i] != str2[i]) {
-                        if (str1[i] < str2[i]) {
-                            res = 1;
-                        }
-                        else {
-                            res = -1;
-                        }
-                    }
-                }
-            }
-                
-            return res;
-        }
-
         void insertarRec(nodoAVL*& r, string pal) {
             if (!r) {
                 r = new nodoAVL(pal);
                 this->vario = true;
             } 
             else {
-                int resultado = cualMayor(r->palabra, pal);
-                if (resultado == 1) {
+                int resultado = r->palabra.compare(pal);
+                if (resultado < 0) {
                     this->insertarRec(r->der, pal); 
                     if(this->vario) {/* crecio la altura subarbol derecho */
                         switch (r->balance) {
@@ -97,7 +62,7 @@ class AVL {
                         }
                     }
                 }
-                else if (resultado == -1) {
+                else if (resultado > 0) {
                     this->insertarRec(r->izq, pal);
                     if (this->vario) { /* crecio altura de subarbol izquierdo */
                         switch(r->balance) {

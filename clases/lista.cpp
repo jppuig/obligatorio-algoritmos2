@@ -21,15 +21,6 @@ class IteradorLista {
             this->actual = this->ppio = ppio;
         }
 
-        void eliminarLista() {
-            this->actual = this->ppio = ppio;
-            while (this->hayElemento()) {
-                this->avanzar();
-                delete this->ppio;
-                this->ppio = this->actual;
-            }
-        }
-
         bool hayElemento() {
             return actual != NULL;
         }
@@ -85,6 +76,17 @@ class Lista {
 
         T obtenerPpio(){
             return this->ppio->dato;
+        }
+
+        void borrarPpio() {
+            NodoLista<T>* borro = this->ppio;
+            this->ppio = this->ppio->sig;
+            delete borro;
+            this->largo--; 
+        }
+
+        bool esVacia() {
+            return this->largo == 0;
         }
 
         IteradorLista<T>* obtenerIterador(){

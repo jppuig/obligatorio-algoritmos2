@@ -45,7 +45,7 @@ int main() {
 
     heap->mostrar();
     
-    heap->~Heap();
+    delete heap;
     
     return 0;
 }

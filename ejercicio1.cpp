@@ -57,7 +57,7 @@ int main() {
 
     mostrar(hash, nombres, cant);
 
-    hash->~HashCerrado();
+    delete hash;
     
     return 0;
 }
