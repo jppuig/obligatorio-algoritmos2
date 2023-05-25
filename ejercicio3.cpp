@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include "clases/heap.cpp"
+#include "clases/heapEj3.cpp"
 #include <cmath>
 
 #include <fstream>  // IMPORTANTE! BORRAR

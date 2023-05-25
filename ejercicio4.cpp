@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("pruebas/Ejercicio4/10.in.txt");
+    ifstream myFile("pruebas/Ejercicio4/100000.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
     ofstream myFile2("out.txt");
@@ -21,6 +21,7 @@ int main() {
 
     cin >> ciudades;
     cin >> carreteras;
+    
     Grafo* grafo = new Grafo(ciudades);
 
     for (int i=0; i<carreteras; i++) {
@@ -50,8 +51,7 @@ int main() {
 
     cin >> cantCarreterasDeshabilitadas;
     for (int i=0; i<cantCarreterasDeshabilitadas; i++) {
-        int carreteraOrigen;
-        int carreteraDestino;
+        int carreteraOrigen, carreteraDestino;
 
         cin >> carreteraOrigen;
         cin >> carreteraDestino;

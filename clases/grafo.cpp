@@ -1,5 +1,6 @@
 #include <iostream>
 #include "./lista.cpp"
+#include "./heapEj4.cpp"
 #define INF 99999
 using namespace std;
 
@@ -18,7 +19,7 @@ class Grafo {
 
         int posNoVisDeMenorCosto(int *dist, bool *vis) {  
             int posMin = -1, min = INF;
-            for (int i = 0; i < tope; i++)
+            for (int i = 1; i < tope; i++)
             {
                 if (!vis[i] && dist[i] < min && this->vertices[i])
                 {
@@ -32,11 +33,11 @@ class Grafo {
     public:
         Grafo(int tope) {
             this->tope = tope+1;
-            this->vertices = new bool[tope];
+            this->vertices = new bool[this->tope];
             this->vertices[0] = false;
             for (int i = 1; i < this->tope; vertices[i++] = true);
 
-            this->listaAdy = new Lista<Arista*>*[tope];
+            this->listaAdy = new Lista<Arista*>*[this->tope];
             for (int i = 1; i < this->tope; this->listaAdy[i++] = new Lista<Arista*>());
         }
 
@@ -48,7 +49,7 @@ class Grafo {
         }
 
         void agregarArista(int origen, int destino, int costo) {
-            Arista* arista = new Arista(origen, destino, costo);
+            Arista* arista = new Arista(costo, origen, destino);
             this->listaAdy[origen]->insertarPpio(arista);
         }
 
@@ -70,69 +71,73 @@ class Grafo {
         }
 
         void dijkstra(int origen, int destino) {
-        bool *vis = new bool[tope]; // Array de visitados
-        int *dist = new int[tope]; // Array de distancias
-        int *ant = new int[tope]; // Array de anteriores
+            bool *vis = new bool[tope]; // Array de visitados
+            int *dist = new int[tope]; // Array de distancias
+            int *ant = new int[tope]; // Array de anteriores
+            Heap* heap = new Heap(tope*3); // Heap para alcanzar en O(M+NLogN)
 
-        for (int i = 0; i < tope; i++) // Inicializo todos los arrays
-        {
-            vis[i] = false;
-            dist[i] = INF;
-            ant[i] = -1;
-        }
-
-        dist[origen] = 0; // Al origen le agrego distancia 0 (costo 0)
-
-        for (int i = 0; i < this->tope; i++) {
-            int proximoVertice = posNoVisDeMenorCosto(dist, vis); // Tomo su arista de menor costo
-
-            if (proximoVertice == -1) // Si es -1 entonces no encontro arista por lo que salgo, no es conexo
+            for (int i = 1; i < tope; i++) // Inicializo todos los arrays
             {
-                break;
+                vis[i] = false;
+                dist[i] = INF;
+                ant[i] = -1;
             }
 
-            for (IteradorLista<Arista*>* j = this->listaAdy[proximoVertice]->obtenerIterador(); j->hayElemento(); j->avanzar()) // Para todas las posibles aristas del proximo vertice 
-            {
-                Arista* carretera = j->obtenerElemento();
-                if (!vis[carretera->destino] && carretera->habilitada) // Si existe y no esta visitada
-                {
-                    int nuevaDistancia = dist[proximoVertice] + carretera->costo; // Tomo distancia anterior y le sumo actual
-                    if (dist[carretera->destino] > nuevaDistancia) // Si esta es menor a la que ya tengo
-                    {
-                        dist[carretera->destino] = nuevaDistancia; // Actualizo distancia
-                        ant[carretera->destino] = proximoVertice; // Actualizo anterior
+            vis[0] = true; // No usamos pos 0 del vector
+            dist[origen] = 0; // Al origen le agrego distancia 0 (costo 0)
+            heap->encolar(origen, dist[origen]); // Agrego origen al heap
+
+            while (!heap->esVacia()) {
+                int proximoVertice = heap->verticeMenorDist(); // Tomo su vertice de menor costo
+                heap->desencolar(); // Lo elimino del heap
+
+                if (!vis[proximoVertice]) { // Si vertice ya esta visitado no hago nada
+                    vis[proximoVertice] = true; // Marco vertice como visitado
+
+                    for (IteradorLista<Arista*>* j = this->listaAdy[proximoVertice]->obtenerIterador(); j->hayElemento(); j->avanzar()) {
+                        Arista* carretera = j->obtenerElemento(); // Tomo arista
+
+                        if (!vis[carretera->destino] && carretera->habilitada) {// Si arista esa habilitada y vertice al que llega no esta visitado
+                            int nuevaDistancia = dist[proximoVertice] + carretera->costo; // Tomo distancia actual del vertice de menor costo y le sumo la de la arista
+                            
+                            if (dist[carretera->destino] > nuevaDistancia) {// Si es menor a la que ya tiene el vertice del destino entonces encontre una mejor
+                                dist[carretera->destino] = nuevaDistancia;
+                                ant[carretera->destino] = proximoVertice;
+                                heap->encolar(carretera->destino, dist[carretera->destino]);
+                            }
+                        }
                     }
                 }
-            }
-            vis[proximoVertice] = true; // Marco vertice como visitado
-        }
-        
-        if (ant[destino] == -1) {
-            cout << -1 << endl;
-            cout << "[]" << endl;
-        } else {
-            cout << dist[destino] << endl;
-            cout << "[";
-            
-            int prox = destino;
-            Lista<int>* camino = new Lista<int>();
-            
-            while (ant[prox] == 0) {
-                camino->insertarPpio(prox);
-                prox = ant[prox];
-            }
-            
-            while (!camino->esVacia()) {
-                cout << camino->obtenerPpio();
-                camino->borrarPpio();
-                if (!camino->esVacia()) {
-                    cout << ", ";
-                }
-            }
-            
-            cout << "]" << endl;
 
-            delete camino;
+            }
+            
+            if (ant[destino] == -1) { // No es conexo entonces no hay camino
+                cout << -1 << endl;
+                cout << "[]" << endl;
+            } else {
+                Lista<int>* camino = new Lista<int>(); // Creo lista para agregar el camino
+                camino->insertarPpio(destino);
+                int prox = ant[destino];
+                
+                while (camino->obtenerPpio() != origen) {
+                    camino->insertarPpio(prox);
+                    prox = ant[prox];
+                }
+                
+                cout << dist[destino] << endl;
+                // cout << "[";
+                
+                while (!camino->esVacia()) {
+                    cout << camino->obtenerPpio() << " "; // Eliminar espacio y descomentar lo otro para entrega
+                    camino->borrarPpio();
+                    // if (!camino->esVacia()) {
+                    //     cout << ", ";
+                    // }
+                }
+                
+                // cout << "]" << endl;
+
+                delete camino;
         }
     }
 };
