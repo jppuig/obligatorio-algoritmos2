@@ -1,6 +1,7 @@
 #include <iostream>
 #include "./lista.cpp"
 #include "./heapEj4.cpp"
+#include "./heapEj5.cpp"
 #define INF 99999
 using namespace std;
 
@@ -66,7 +67,7 @@ class Grafo {
             }
         }
 
-        void deshabilitarCiudad(int pos) {
+        void deshabilitarVertice(int pos) {
             this->vertices[pos] = false;
         }
 
@@ -74,7 +75,7 @@ class Grafo {
             bool *vis = new bool[tope]; // Array de visitados
             int *dist = new int[tope]; // Array de distancias
             int *ant = new int[tope]; // Array de anteriores
-            Heap* heap = new Heap(tope*3); // Heap para alcanzar en O(M+NLogN)
+            HeapEj4* heap = new HeapEj4(tope*3); // Heap para alcanzar en O(M+NLogN)
 
             for (int i = 1; i < tope; i++) // Inicializo todos los arrays
             {
@@ -138,6 +139,40 @@ class Grafo {
                 // cout << "]" << endl;
 
                 delete camino;
+        }
+    }
+
+    void ordenTopologico(int* incidencias) {
+        Lista<int> *ot = new Lista<int>();
+        HeapEj5* heap = new HeapEj5(this->tope);
+        int* niveles = new int[this->tope];
+        for (int i=0; i<this->tope; niveles[i++] = 0);
+
+        for (int i=1; i<this->tope; i++) {
+            if (incidencias[i] == 0) {
+                ot->insertarPpio(i);
+                niveles[i] = 0;
+            }
+        }
+        
+
+        while(!ot->esVacia()) {
+            int vertice = ot->obtenerPpio();
+            ot->borrarPpio();
+            heap->encolar(vertice, niveles[vertice]);
+
+            for (IteradorLista<Arista*>* it = this->listaAdy[vertice]->obtenerIterador(); it->hayElemento(); it->avanzar()) {
+                Arista* ar = it->obtenerElemento();
+                if (--incidencias[ar->destino] == 0) {
+                    ot->insertarFin(ar->destino);
+                    niveles[ar->destino] = niveles[vertice] + 1;
+                }
+            }
+        }
+
+        while(!heap->esVacia()) {
+            cout << heap->verticeMenor() << endl;
+            heap->desencolar();
         }
     }
 };

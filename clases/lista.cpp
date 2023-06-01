@@ -74,6 +74,18 @@ class Lista {
             this->largo++;
         }
 
+        void insertarFin(T dato){
+            this->fin = new NodoLista<T>(dato, this->fin, NULL);
+            if(!this->ppio){
+                this->ppio = this->fin;
+            }
+            else
+            {
+                this->fin->ant->sig = this->fin;
+            }
+            this->largo++;
+        }
+
         T obtenerPpio(){
             return this->ppio->dato;
         }

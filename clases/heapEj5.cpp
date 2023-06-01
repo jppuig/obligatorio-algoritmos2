@@ -4,26 +4,27 @@
 #include <cmath>
 using namespace std;
 
-class nodoHeap4 {
+class nodoHeap5 {
     public:
         int vertice;
-        int distancia;
+        int nivel;
 
-        nodoHeap4(int vertice, int distancia): vertice(vertice), distancia(distancia) {}
+        nodoHeap5(int vertice, int nivel): vertice(vertice), nivel(nivel) {}
 };
 
-class HeapEj4 {
+class HeapEj5 {
     private:
-        nodoHeap4** heap;
+        nodoHeap5** heap;
         int tope;
         int maxElementos;
 
         void flotar(int pos){
-            if (pos == 0 || this->heap[pos]->distancia >= this->heap[(pos-1)/2]->distancia) {
+            if (pos == 0 || this->heap[pos]->nivel > this->heap[(pos-1)/2]->nivel ||
+            (this->heap[pos]->nivel == this->heap[(pos-1)/2]->nivel && this->heap[pos]->vertice > this->heap[(pos-1)/2]->vertice)) {
                 return;
             }
             else {
-                nodoHeap4* temp = this->heap[(pos-1)/2];
+                nodoHeap5* temp = this->heap[(pos-1)/2];
                 this->heap[(pos-1)/2] = this->heap[pos];
                 this->heap[pos] = temp;
 
@@ -35,7 +36,8 @@ class HeapEj4 {
             int hijoMin = pos*2+1;
 
             if (pos*2+2 < this->tope) {
-                if (this->heap[pos*2+1]->distancia > this->heap[pos*2+2]->distancia) {
+                if (this->heap[pos*2+1]->nivel > this->heap[pos*2+2]->nivel || 
+                (this->heap[pos*2+1]->nivel == this->heap[pos*2+2]->nivel && this->heap[pos*2+1]->vertice > this->heap[pos*2+2]->vertice)) {
                     hijoMin = pos*2+2;
                 }
             }
@@ -43,8 +45,9 @@ class HeapEj4 {
                 return;
             }
 
-            if (this->heap[pos]->distancia > this->heap[hijoMin]->distancia) {
-                nodoHeap4* temp = this->heap[hijoMin];
+            if (this->heap[pos]->nivel > this->heap[hijoMin]->nivel || 
+            (this->heap[pos]->nivel == this->heap[hijoMin]->nivel && this->heap[pos]->vertice > this->heap[hijoMin]->vertice)) {
+                nodoHeap5* temp = this->heap[hijoMin];
                 this->heap[hijoMin] = this->heap[pos];
                 this->heap[pos] = temp;
 
@@ -53,18 +56,19 @@ class HeapEj4 {
         }
 
     public:
-        HeapEj4(int maxElementos){
+        HeapEj5(int maxElementos){
             this->maxElementos = maxElementos;
             this->tope = 0;
-            this->heap = new nodoHeap4*[this->maxElementos];
+            this->heap = new nodoHeap5*[this->maxElementos];
         }
-        ~HeapEj4(){
+        
+        ~HeapEj5(){
             for (int i = 0; i < this->tope; delete this->heap[i++]);
             delete [] this->heap;
         }
 
-        void encolar(int vertice, int distancia){ 
-            this->heap[this->tope] = new nodoHeap4(vertice, distancia);
+        void encolar(int vertice, int nivel){ 
+            this->heap[this->tope] = new nodoHeap5(vertice, nivel);
             this->flotar(this->tope++);
         }
 
@@ -76,11 +80,11 @@ class HeapEj4 {
         }
 
         //Pre: !EsVacia()
-        int distanciaMin(){
-            return this->heap[0]->distancia;
+        int nivelMin(){
+            return this->heap[0]->nivel;
         }
 
-        int verticeMenorDist() {
+        int verticeMenor() {
             return this->heap[0]->vertice;
         }
 

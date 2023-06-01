@@ -46,7 +46,7 @@ int main() {
         int ciudad;
         cin >> ciudad;
 
-        grafo->deshabilitarCiudad(ciudad);     // Deshabilita la ciudad
+        grafo->deshabilitarVertice(ciudad);     // Deshabilita la ciudad
     }
 
     cin >> cantCarreterasDeshabilitadas;
@@ -64,7 +64,7 @@ int main() {
 
     grafo->dijkstra(ciudadDesde, ciudadHasta);
 
-    //delete grafo;
+    delete grafo;
 
     return 0;
 }
