@@ -12,12 +12,6 @@ int main() {
     ofstream myFile2("out.txt");
     cout.rdbuf(myFile2.rdbuf());
 
-    // 2 heap uno que llega y otro que se va
-    // Saco del primero y agrego en el segundo solo la hora de salida, si el proximo del primero
-    // es menor al primero del segundo entonces agrego, sino elimino el primero del segundo
-    // y vuelvo a comparar. El numero maximo en cualquier momento de la cantidad de elementos
-    // en el segundo heap es la cantidad de puertas que tengo que construir.
-
     int cantidadAviones;
     cin >> cantidadAviones;
 
