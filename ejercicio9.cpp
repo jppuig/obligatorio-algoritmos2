@@ -39,7 +39,7 @@ int main() {
         }
     }
 
-    delete pascal;
+    delete[] pascal;
 
     return 0;
 }

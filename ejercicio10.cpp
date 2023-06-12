@@ -9,44 +9,39 @@ bool esSolucion(int fila, int col, int& filaB, int& colB, bool& pasoBede, int& f
         pasoBede = true;
     }
 
-    if (fila == filaD && col == colD && pasoBede) {
-        return true;
-    } else {
-        return false;
-    }
+    return fila == filaD && col == colD && pasoBede;
 }
 
-bool esAceptable(char**& matriz, int& n, int& m, int fila, int col, int solActual, int& solOptima) {
-    if (fila >= 0 && fila <= m && col >=0 && col <= n && matriz[fila][col] != 'P' && solActual < solOptima) {
-        return true;
-    } else {
-        return false;
-    }
-
+bool esAceptable(char**& matriz, bool**& vis, int& n, int& m, int fila, int col, int solActual, int& solOptima) {
+    return fila >= 0 && fila < m && col >= 0 && col < n && !vis[fila][col] && matriz[fila][col] != 'P' 
+        && solActual < solOptima;
 }
 
-void backtracking(int& n, int& m, char**& matriz, int fila, int col, int& filaB, int& colB, bool pasoBede, int& filaD, int& colD, int solActual, int& solOptima) {
+void backtracking(int& n, int& m, bool**& vis, char**& matriz, int fila, int col, int& filaB, int& colB, bool pasoBede, int& filaD, int& colD, int solActual, int& solOptima) {
     if (esSolucion(fila, col, filaB, colB, pasoBede, filaD, colD)) {
+        solActual++; // Cuenta el destino inclusive
         if (solActual < solOptima) {
             solOptima = solActual;
         }
     } else {
-        if (esAceptable(matriz, n, m, fila-1, col, solActual+1, solOptima)) {
+        vis[fila][col] = true;
+        if (esAceptable(matriz, vis, n, m, fila-1, col, solActual+1, solOptima)) {
             //Arriba
-            backtracking(n, m, matriz, fila-1, col, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
+            backtracking(n, m, vis, matriz, fila-1, col, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
         }
-        if (esAceptable(matriz, n, m, fila, col+1, solActual+1, solOptima)) {
+        if (esAceptable(matriz, vis, n, m, fila, col+1, solActual+1, solOptima)) {
             //Derecha
-            backtracking(n, m, matriz, fila, col+1, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
+            backtracking(n, m, vis, matriz, fila, col+1, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
         }
-        if (esAceptable(matriz, n, m, fila+1, col, solActual+1, solOptima)) {
+        if (esAceptable(matriz, vis, n, m, fila+1, col, solActual+1, solOptima)) {
             // Abajo
-            backtracking(n, m, matriz, fila+1, col, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
+            backtracking(n, m, vis, matriz, fila+1, col, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
         }
-        if (esAceptable(matriz, n, m, fila, col-1, solActual+1, solOptima)) {
+        if (esAceptable(matriz, vis, n, m, fila, col-1, solActual+1, solOptima)) {
             //Izquierda
-            backtracking(n, m, matriz, fila, col-1, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
+            backtracking(n, m, vis, matriz, fila, col-1, filaB, colB, pasoBede, filaD, colD, solActual+1, solOptima);
         }
+        vis[fila][col] = false;
     }
 }
 
@@ -63,21 +58,23 @@ int main() {
     cin >> n;
 
     char** matriz = new char*[m];
+    bool** vis = new bool*[m];
     int bedeliasFila;
     int bedeliasCol;
 
     for (int i=0; i<m; i++) {
         matriz[i] = new char[n];
+        vis[i] = new bool[n];
         for (int j=0; j<n; j++) {
             char letra;
             cin >> letra;
+            matriz[i][j] = letra;
+            vis[i][j] = false;
             
             if (matriz[i][j] == 'B') {
                 bedeliasFila = i;
                 bedeliasCol = j;
             }
-
-            matriz[i][j] = letra;
         }
     }
 
@@ -90,11 +87,15 @@ int main() {
         cin >> origenFila;
         cin >> destinoCol;
         cin >> destinoFila;
+        origenCol--;
+        origenFila--;
+        destinoCol--;
+        destinoFila--;
 
         solOptima = INF;
         solActual = 0;
 
-        backtracking(n, m, matriz, origenFila, origenCol, bedeliasFila, bedeliasCol, false, destinoFila, destinoCol, solActual, solOptima);
+        backtracking(n, m, vis, matriz, origenFila, origenCol, bedeliasFila, bedeliasCol, false, destinoFila, destinoCol, solActual, solOptima);
 
         if (solOptima == INF) {
             cout << 0 << endl;
