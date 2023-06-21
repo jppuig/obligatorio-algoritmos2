@@ -5,6 +5,14 @@
 
 using namespace std;
 
+int max2(int a, int b) {
+    if (a < b) {
+        return b;
+    } else {
+        return a;
+    }
+}
+
 int max3(int a, int b, int c) {
     int max = -1;
     
@@ -60,7 +68,7 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
                 mat3d[i][j][k] = entraTam && entraLin ? 
                     max3(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k], archivos[i]->puntaje + mat3d[i][j][k-archivos[i]->lineas]) : arriba;
                     // Debuggear con el de abajo
-                    // max(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
+                    // max2(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
             }
         }
     }
