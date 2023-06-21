@@ -48,13 +48,19 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
     for (int i=1;i<cantArchivos; i++) {
         for (int j=1; j<=cantMaxMB; j++) {
             for (int k=1; k<=cantMaxCodigo; k++) {
-                bool entraTam = j > archivos[i]->tamano;
-                bool entraLin = k > archivos[i]->lineas;
+                bool entraTam = j >= archivos[i]->tamano;
+                bool entraLin = k >= archivos[i]->lineas;
+
+                // if (entraTam) {
+                //     cout << archivos[i]->tamano << endl;
+                // }
 
                 int arriba = mat3d[i-1][j][k];
 
                 mat3d[i][j][k] = entraTam && entraLin ? 
                     max3(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k], archivos[i]->puntaje + mat3d[i][j][k-archivos[i]->lineas]) : arriba;
+                    // Debuggear con el de abajo
+                    // max(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
             }
         }
     }
@@ -74,7 +80,7 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("pruebas/Ejercicio7/10.in.txt");
+    ifstream myFile("pruebas/Ejercicio7/1.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
     ofstream myFile2("out.txt");
