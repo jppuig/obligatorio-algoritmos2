@@ -5,27 +5,12 @@
 
 using namespace std;
 
-int max2(int a, int b) {
+int max(int a, int b) {
     if (a < b) {
         return b;
     } else {
         return a;
     }
-}
-
-int max3(int a, int b, int c) {
-    int max = -1;
-    
-    if (a < b) {
-        if (b < c) {
-            max = c;
-        } else {
-            max = b;
-        }
-    } else if (a > c) {
-        max = a;
-    }
-    return max;
 }
 
 int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCodigo) {
@@ -36,16 +21,11 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
     
         for (int j=0; j<=cantMaxMB; j++) {
             mat3d[i][j] = new int[cantMaxCodigo+1];
-
-            for (int k=0; k<=cantMaxCodigo; k++) {
-                mat3d[i][j][0] = 0;
-                mat3d[i][0][k] = 0;
-            }
         }
     }
 
-    for (int j=1; j<=cantMaxMB; j++) {
-        for (int k=1; k<=cantMaxCodigo; k++) {
+    for (int j=0; j<=cantMaxMB; j++) {
+        for (int k=0; k<=cantMaxCodigo; k++) {
             bool entraTam = (j / archivos[0]->tamano) > 0;
             bool entraLin = (k / archivos[0]->lineas) > 0;
 
@@ -54,21 +34,15 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
     }
 
     for (int i=1;i<cantArchivos; i++) {
-        for (int j=1; j<=cantMaxMB; j++) {
-            for (int k=1; k<=cantMaxCodigo; k++) {
+        for (int j=0; j<=cantMaxMB; j++) {
+            for (int k=0; k<=cantMaxCodigo; k++) {
                 bool entraTam = j >= archivos[i]->tamano;
                 bool entraLin = k >= archivos[i]->lineas;
 
-                // if (entraTam) {
-                //     cout << archivos[i]->tamano << endl;
-                // }
-
                 int arriba = mat3d[i-1][j][k];
 
-                mat3d[i][j][k] = entraTam && entraLin ? 
-                    max3(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k], archivos[i]->puntaje + mat3d[i][j][k-archivos[i]->lineas]) : arriba;
-                    // Debuggear con el de abajo
-                    // max2(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
+                mat3d[i][j][k] = entraTam && entraLin ?
+                    max(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
             }
         }
     }
@@ -88,7 +62,7 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("pruebas/Ejercicio7/1.in.txt");
+    ifstream myFile("pruebas/Ejercicio7/1000.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
     ofstream myFile2("out.txt");
