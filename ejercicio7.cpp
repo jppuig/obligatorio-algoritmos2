@@ -42,7 +42,8 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
                 int arriba = mat3d[i-1][j][k];
 
                 mat3d[i][j][k] = entraTam && entraLin ?
-                    max(arriba, archivos[i]->puntaje + mat3d[i][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
+                    max(arriba, archivos[i]->puntaje + mat3d[i-1][j-archivos[i]->tamano][k-archivos[i]->lineas]) : arriba;
+                                // es i-1 pq es si comparo en i uso mas de una vez el elemento
             }
         }
     }
@@ -62,7 +63,7 @@ int entregaDP(NodoDP** &archivos, int cantArchivos, int cantMaxMB, int cantMaxCo
 
 int main() {
     // IMPORTANTE! BORRAR O COMENTAR LAS SIGUIENTES LINEAS  EN TODOS LOS EJERCICIOS DEL OBLIGATORIO. NO PUEDEN ESTAR EN NINGUNA ENTREGA!
-    ifstream myFile("pruebas/Ejercicio7/1000.in.txt");
+    ifstream myFile("pruebas/Ejercicio7/10000.in.txt");
     cin.rdbuf(myFile.rdbuf());
     // Si desean tirar la salida a un archivo, usen las siguientes líneas (si no, sáquenlas):
     ofstream myFile2("out.txt");
@@ -92,7 +93,7 @@ int main() {
 
     cout << puntaje << endl;
 
-    // Eliminar archivos
+    delete[] archivos;
 
     return 0;
 }
