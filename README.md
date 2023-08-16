@@ -1,5 +1,7 @@
 # Obligatorio Algoritmos 2
 
+## Este README hace referencia al pdf que se encuentra en el repositorio el cual es el original.
+
 ### IMPORTANTE: borrar debugger y entradas y salidas de los ejercicios.
 ### CORRER diff en todas las pruebas y preguntar como es el comando
 
